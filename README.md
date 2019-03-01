@@ -10,3 +10,8 @@ virtualenv env
 source env/bin/activate
 pip install -r requests.txt
 ```
+
+Run example code
+```
+python openspending.py
+```
