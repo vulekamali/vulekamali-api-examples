@@ -128,6 +128,7 @@ def get_summary(model_url):
     logger.info("\n\nRequesting a summary of department budgets:")
     logger.info("cuts: %r", cuts)
     logger.info("drilldowns: %r", drilldowns)
+    logger.info("query string dictionary: %r", params)
     aggregate_result = requests.get(aggregate_url, params=params)
     aggregate_result.raise_for_status()
     logger.info("Result:\n%s", json.dumps(aggregate_result.json(), sort_keys=True, indent=4))
