@@ -19,8 +19,6 @@ PAGE_SIZE = 10000
 def get_model(model_ur):
     logger.info(("\n\nRequesting the OpenSpending model for the"
                  " 2019 Estimates of National Expenditure"))
-    # Get the model URL for an OpenSpending dataset endpoint from
-    # vulekamali.gov.za or data.vulekamali.gov.za
 
     # Request the model
     model_result = requests.get(model_url)
@@ -163,6 +161,8 @@ def get_summary(model_url):
     # https://vulekamali.gov.za/2019-20/national/departments/basic-education
 
 
+# Get the model URL for an OpenSpending dataset endpoint from
+# vulekamali.gov.za or data.vulekamali.gov.za
 model_url = "https://openspending.org/api/3/cubes/b9d2af843f3a7ca223eea07fb608e62a:estimates-of-national-expenditure-2019-20-uploaded-2019-02-20t1910/model/"
 
 get_summary(model_url)
