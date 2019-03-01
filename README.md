@@ -1,7 +1,7 @@
 vulekamali API exmaples
 =======================
 
-Tested on Python 3.7.2
+Tested on Python 3.7
 
 Set up python environment:
 
