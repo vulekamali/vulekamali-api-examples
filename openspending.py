@@ -30,6 +30,71 @@ def get_model(model_ur):
 
     logger.info("Result:\n%s", json.dumps(model_result.json(), sort_keys=True, indent=4))
 
+    # This looks something like
+    # {
+    #     "model": {
+    #         "aggregates": {
+    #         },
+    #         "dimensions": {
+    #             "budget_phase": {
+    #                 "attributes": {
+    #                     "budget_phase": {
+    #                         "label": "Budget Phase",
+    #                         "ref": "budget_phase.budget_phase",
+    #                         "type": "string"
+    #                     }
+    #                 },
+    #                 "hierarchy": "phase",
+    #                 "key_attribute": "budget_phase",
+    #                 "key_ref": "budget_phase.budget_phase",
+    #                 "label": "Budget Phase",
+    #                 "label_attribute": "budget_phase",
+    #                 "label_ref": "budget_phase.budget_phase",
+    #                 "ref": "budget_phase"
+    #             },
+    #             "econ1": {
+    #             "econ2": {
+    #                 "attributes": {
+    #                     "econ2": {
+    #                         "label": "Econ2",
+    #                         "ref": "econ2.econ2",
+    #                         "type": "string"
+    #                     }
+    #                 },
+    #                 "hierarchy": "economic_classification",
+    #                 "join_column": [
+    #                     "economic_classification_id",
+    #                     "_fdp__id_"
+    #                 ],
+    #                 "key_attribute": "econ2",
+    #                 "key_ref": "econ2.econ2",
+    #                 "label": "Econ2",
+    #                 "label_attribute": "econ2",
+    #                 "label_ref": "econ2.econ2",
+    #                 "ref": "econ2"
+    #             },
+    #             "econ3": {
+    #         "hierarchies": {
+    #             "administrative_classification": {
+    #             "date": {
+    #                 "label": "date",
+    #                 "levels": [
+    #                     "finyear"
+    #                 ],
+    #                 "ref": "date"
+    #             },
+    #             "economic_classification": {
+    #                 "label": "economic_classification",
+    #                 "levels": [
+    #                     "econ1",
+    #                     "econ2",
+    #                     "econ3",
+    #                     "econ4",
+    #                     "econ5"
+    #                 ],
+    #                 "ref": "economic_classification"
+    #             },
+
     return model_result.json()['model']
 
 
@@ -66,6 +131,28 @@ def get_summary(model_url):
     aggregate_result = requests.get(aggregate_url, params=params)
     aggregate_result.raise_for_status()
     logger.info("Result:\n%s", json.dumps(aggregate_result.json(), sort_keys=True, indent=4))
+
+    # This looks something like
+    # {
+    #     "aggregates": [
+    #     "attributes": [
+    #     "cell": [
+    #     "cells": [
+    #         {
+    #             "_count": 517,
+    #             "value.sum": 7664889000,
+    #             "voteno.department": "Agriculture, Forestry and Fisheries"
+    #         },
+    #         {
+    #             "_count": 246,
+    #             "value.sum": 4617485000,
+    #             "voteno.department": "Arts and Culture"
+    #         },
+    #         {
+    #             "_count": 326,
+    #             "value.sum": 24504531000,
+    #             "voteno.department": "Basic Education"
+    #         },
 
     # You can verify these totals on page 11 of the budget publications like
     # https://data.vulekamali.gov.za/dataset/f07a6899-7fb1-4ec8-9f60-8f5a53c13e21/resource/1639f97e-2ba8-4cd9-9f8a-3cf282065440/download/vote-24-agriculture-forestry-and-fisheries.pdf
