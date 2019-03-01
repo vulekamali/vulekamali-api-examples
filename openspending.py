@@ -96,9 +96,7 @@ def get_model(model_ur):
     return model_result.json()['model']
 
 
-def get_summary(model_url):
-    model = get_model(model_url)
-
+def get_summary(aggregate_url, model):
     department_dimension = model['hierarchies']['administrative_classification']['levels'][0]
     department_ref = model['dimensions'][department_dimension]['label' + "_ref"]
 
@@ -122,7 +120,6 @@ def get_summary(model_url):
     params['cut'] = "|".join(cuts)
     params['drilldown'] = "|".join(drilldowns)
 
-    aggregate_url = model_url.replace("model", "aggregate")
     logger.info("\n\nRequesting a summary of department budgets:")
     logger.info("cuts: %r", cuts)
     logger.info("drilldowns: %r", drilldowns)
@@ -161,8 +158,39 @@ def get_summary(model_url):
     # https://vulekamali.gov.za/2019-20/national/departments/basic-education
 
 
+def get_members(members_url, model):
+    logger.info("\n\nRequesting a list of members of a column:")
+    budget_phase_dimension = model['hierarchies']['phase']['levels'][0]
+    budget_phase_ref = model['dimensions'][budget_phase_dimension]['label' + "_ref"]
+
+    members_result = requests.get(members_url + budget_phase_ref)
+    members_result.raise_for_status()
+    logger.info("Result:\n%s", json.dumps(members_result.json(), sort_keys=True, indent=4))
+
+    # {
+    #     "cell": [],
+    #     "data": [
+    #         {
+    #             "budget_phase.budget_phase": "Adjusted appropriation"
+    #         },
+    #         {
+    #             "budget_phase.budget_phase": "Audited Outcome"
+    #         },
+
+    # Find definitions of these terms in the vulekamali glossary
+    # https://vulekamali.gov.za/glossary
+    # and the Treasury budget guide
+    # http://www.treasury.gov.za/publications/guidelines/2019%20ENE%20Guidelines.pdf
+
+
+
 # Get the model URL for an OpenSpending dataset endpoint from
 # vulekamali.gov.za or data.vulekamali.gov.za
 model_url = "https://openspending.org/api/3/cubes/b9d2af843f3a7ca223eea07fb608e62a:estimates-of-national-expenditure-2019-20-uploaded-2019-02-20t1910/model/"
+model = get_model(model_url)
 
-get_summary(model_url)
+aggregate_url = model_url.replace("model", "aggregate")
+get_summary(aggregate_url, model)
+
+members_url = model_url.replace("model", "members")
+get_members(members_url, model)
